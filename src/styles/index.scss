@@ -1,0 +1,27 @@
+body {
+  background: #000;
+  color: #FFF;
+  font-family: sans-serif;
+}
+
+.game {
+  background: #000;
+  position: relative;
+  height: 200px;
+
+  .hero {
+    background: rgba(255, 255, 255, 0.4);
+    height: 40px;
+    left: 30px;
+    bottom: 0px;
+    position: absolute;
+    width: 10px;
+  }
+
+  .obstacle {
+    background: #966;
+    height: 20px;
+    position: absolute;
+    width: 20px;
+  }
+}

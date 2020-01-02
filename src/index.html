@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thinking runner</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.4/dist/tf.min.js"></script>
+</head>
+<body>
+  <div id="game" class="game">
+  </div>
+
+  <br>
+  <span class='js-info'></span>
+
+  <br><br>
+
+  Frame every <select class='js-time-scaler'>
+    <option selected value="100">100</option>
+    <option selected value="50">50</option>
+    <option selected value="10">10</option>
+    <option selected value="1">1</option>
+  </select> milisecond
+
+  <br><br>
+
+  Render <input type="checkbox" checked class='js-render-toggle'>
+</body>
+</html>
