@@ -7,7 +7,9 @@ class Obstacle {
     this.height = height;
 
     this.gameElement = document.getElementById("game");
-    this.createElement();
+    this.element = document.createElement("div");
+    this.element.classList.add('obstacle');
+    this.gameElement.append(this.element);
   };
 
   render() {
@@ -17,14 +19,12 @@ class Obstacle {
     this.element.style.width = `${this.width}px`;
   };
 
-  createElement() {
-    this.element = document.createElement("div");
-    this.element.classList.add('obstacle');
-    this.gameElement.append(this.element);
+  dispose() {
+    this.gameElement.removeChild(this.element);
   };
 
-  removeElement() {
-    this.gameElement.removeChild(this.element);
+  update() {
+    this.position.x += this.velocity.x;
   };
 };
 

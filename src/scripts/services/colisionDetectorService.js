@@ -10,9 +10,4 @@ const actorColided = (actor, obstacles) => {
   });
 };
 
-const actorGrounded = (actor) => {
-  return actor.position.y <= 0.001;
-};
-
-
-export { actorColided, actorGrounded };
+export { actorColided };
