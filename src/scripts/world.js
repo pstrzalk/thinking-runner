@@ -10,6 +10,9 @@ const MAX_VELOCITY = 500;
 class World {
   constructor() {
     this.obstacles = [];
+  };
+
+  init() {
     this.population = new Population();
 
     this.gameElement = document.querySelector('#game');
@@ -28,11 +31,40 @@ class World {
     this.obstacles = [];
   };
 
-  run() {
+  getHTML() {
+    return `
+      <div id="train" class="train">
+        <div id="game" class="game">
+        </div>
+
+        <br>
+        <span class='js-info'></span>
+
+        <br><br>
+
+        Frame <select class='js-time-scaler'>
+          <option value="50">every 50 milisecond</option>
+          <option selected value="25">every 25 milisecond</option>
+          <option value="10">every 10 milisecond</option>
+          <option value="">as soon as possible</option>
+        </select>
+
+        <br><br>
+
+        Render <input type="checkbox" checked class='js-render-toggle'>
+        <br>
+        Show One <input type="checkbox" class='js-render-one'>
+        <br>
+        Pause <input type="checkbox" class='js-pause'>
+      </div>
+    `;
+  }
+
+  render() {
     if (!this.pauseElement.checked) {
       this.updateObstacles();
       this.updatePopulation();
-      this.render();
+      this.renderInfo();
 
       if (!this.population.atLeastOneAlive()) {
         this.resetObstacles();
@@ -41,12 +73,12 @@ class World {
     }
 
     setTimeout(
-      () => { this.run(); },
+      () => { this.render(); },
       parseInt(this.timeScalerElement.value)
     );
   };
 
-  render() {
+  renderInfo() {
     if (this.population.atLeastOneAlive()) {
       this.infoElement.innerHTML =
         `<b>Current population:</b><br>` +
@@ -63,12 +95,12 @@ class World {
         if (this.population.atLeastOneAlive()) {
           this.population.alive[0].render();
         }
-        this.population.alive.slice(1).forEach(hero => hero.render(false));
+        this.population.alive.slice(1).forEach(runner => runner.render(false));
       } else {
-        this.population.alive.forEach(hero => hero.render());
+        this.population.alive.forEach(runner => runner.render());
       }
 
-      this.population.dead.forEach(hero => hero.render(false));
+      this.population.dead.forEach(runner => runner.render(false));
 
       this.obstacles.forEach(obstacle => obstacle.render());
     } else {
@@ -77,22 +109,29 @@ class World {
   };
 
   updatePopulation() {
-    const firstObstacleIndex = this.obstacles[0].position.x > 20 ? 0 : 1; // 20px is hero width
+    const firstObstacleIndex = this.obstacles[0].position.x > 20 ? 0 : 1; // 20px is runner width
+
+    if (firstObstacleIndex == 1) {
+      this.obstacles[0].element.style.backgroundColor = 'green';
+    }
+    this.obstacles[firstObstacleIndex].element.style.backgroundColor = 'red';
+
     const conditions = [
       this.obstacles[firstObstacleIndex].position.x / SCREEN_WIDTH,
       this.obstacles[firstObstacleIndex].position.y / SCREEN_HEIGHT,
-      this.obstacles[firstObstacleIndex + 1].position.x / SCREEN_WIDTH,
-      this.obstacles[firstObstacleIndex + 1].position.y / SCREEN_HEIGHT,
+      this.obstacles[firstObstacleIndex].width / 100,
+      // this.obstacles[firstObstacleIndex + 1].position.x / SCREEN_WIDTH,
+      // this.obstacles[firstObstacleIndex + 1].position.y / SCREEN_HEIGHT,
       1 // bias
     ];
 
-    this.population.alive.forEach((hero, index) => {
-      if (actorColided(hero, this.obstacles)) {
+    this.population.alive.forEach((runner, index) => {
+      if (actorColided(runner, this.obstacles)) {
         this.population.killAt(index);
         return;
       }
 
-      hero.update(conditions);
+      runner.update(conditions);
     });
 
     this.population.mature();
@@ -132,6 +171,14 @@ class World {
 
     this.obstacles.push(new Obstacle(x, y));
   };
+
+  bestBrain() {
+    if (!this.population || !this.population.hallOfFame.length) {
+      return null;
+    }
+
+    return this.population.hallOfFame[0].brain.duplicate();
+  }
 };
 
 export { World };

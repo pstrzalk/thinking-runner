@@ -3,7 +3,7 @@ class Obstacle {
     this.position = { x: x, y: y };
     this.velocity = { x: -20, y: 0 };
 
-    this.width = 20;
+    this.width = y > 0 ? 20 : (Math.floor(Math.random() * 80) + 20);
     this.height = height;
 
     this.gameElement = document.getElementById("game");

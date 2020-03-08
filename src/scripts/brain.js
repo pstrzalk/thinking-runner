@@ -1,4 +1,4 @@
-const BRAIN_INPUT_SIZE = 5;
+const BRAIN_INPUT_SIZE = 4;
 const BRAIN_OUTPUT_SIZE = 3;
 
 class Brain {
@@ -73,7 +73,7 @@ class Brain {
     const model = tf.sequential();
 
     const hidden1 = tf.layers.dense(
-      { units: BRAIN_INPUT_SIZE * 4, inputShape: [BRAIN_INPUT_SIZE], activation: 'relu' }
+      { units: BRAIN_INPUT_SIZE * 2, inputShape: [BRAIN_INPUT_SIZE], activation: 'relu' }
     );
     model.add(hidden1);
 
@@ -83,14 +83,36 @@ class Brain {
     // const dropout = tf.layers.dropout({ rate: 0.33333 });
     // model.add(dropout);
 
-    const hidden3 = tf.layers.dense({ units: BRAIN_INPUT_SIZE * 2, activation: 'relu' });
-    model.add(hidden3);
+    // const hidden3 = tf.layers.dense({ units: BRAIN_INPUT_SIZE * 2, activation: 'relu' });
+    // model.add(hidden3);
 
     const output = tf.layers.dense({ units: BRAIN_OUTPUT_SIZE, activation: 'softmax' });
     model.add(output);
 
     return model;
   };
+
+  chooseAction(conditions) {
+    const actionProbabilities = this.predictAction(conditions);
+    let action = '';
+
+    let maxProbability = 0;
+    for (let i = 0; i < actionProbabilities.length; i++) {
+      if (actionProbabilities[i] > maxProbability) {
+        maxProbability = actionProbabilities[i];
+      }
+    }
+
+    if (actionProbabilities[0] === maxProbability) {
+      action = 'bigJump';
+    } else if (actionProbabilities[1] === maxProbability) {
+      action = 'smallJump';
+    } else {
+      action = 'justDoNothing';
+    }
+
+    return action;
+  }
 }
 
 export { Brain };

@@ -1,6 +1,5 @@
 const Path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -19,9 +18,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      { from: Path.resolve(__dirname, '../public'), to: 'public' }
-    ]),
     new HtmlWebpackPlugin({
       template: Path.resolve(__dirname, '../src/index.html')
     })
@@ -39,7 +35,7 @@ module.exports = {
         type: 'javascript/auto'
       },
       {
-        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+        test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|fbx)(\?.*)?$/,
         use: {
           loader: 'file-loader',
           options: {
