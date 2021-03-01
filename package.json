@@ -50,7 +50,7 @@
     "core-js": "^3.4.5",
     "nes.css": "^2.3.0",
     "stats-js": "^1.0.1",
-    "three": "^0.112.1",
+    "three": "^0.125.0",
     "three-fbx-loader": "^1.0.3",
     "three-fbxloader-offical": "^1.0.0",
     "three-js": "^79.0.0"
